@@ -1,0 +1,36 @@
+-------------- tables ---------------
+ 
+- orders       ( ord_id pk, ord_datetime, ord_status, cli_id fk , deliv_cost                           (done)
+
+- items        ( item_id pk, item_name, item_price, item_details, item_quantity, item_imgs, item_discount, cat_id fk, bra_id fk  (done)
+
+- order_items  ( ( item_id fk , ord_id fk ) pk, i_quant )     
+
+- clients      ( cli_id pk, cli_name, cli_email )        (done)
+
+- client_phone ( ( cli_id fk, phone ) pk )       (done)
+
+- client_location ( ( cli_id fk, loaction) pk )    (done)
+
+- accounts     ( acc_id pk , acc_username, acc_pass, acc_name, acc_phone, acc_img, acc_permission fk , sup_acc_id fk )       (done)
+
+- order_changes (ord_chg_id pk, acc_id , ord_id, ord_chg_datetime , ord_chg_descr ) 
+
+- item_changes ( item_chg_id pk, acc_id , item_id, item_chg_datetime , item_chg_descr)
+
+- category_changes ( cat_chg_id pk, acc_id,  cat_id, cat_chg_datetime , cat_chg_descr) #
+
+- brand_changes (bra_chg_id pk, acc_id, bra_id , bra_chg_datetime , bra_chg_descr)
+
+- account_changes ( acc_chg_id pk, acc_id, acc_id_changed, acc_chg_datetime , acc_chg_descr)
+
+- brand_changes (bra_chg_id pk, acc_id, bra_id , bra_chg_datetime , bra_chg_descr)
+
+- permission_changes (perm_chg_id pk, acc_id, perm_level , perm_chg_datetime , perm_chg_descr)
+
+- permissions   ( perm_level pk , perm_description )
+ 
+- categories   ( cat_id pk, cat_name, sub_cat_id fk )    (done)
+
+- brands       ( bra_id pk, bar_name )    (done)
+
