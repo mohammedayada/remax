@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'order',
+    'item',
+    'client',
+    'brand',
+    'category',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -50,11 +56,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'remax.urls'
-
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/'),
+                 os.path.join(BASE_DIR, 'env/lib/site-packages/django/contrib/admin/templates')
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
