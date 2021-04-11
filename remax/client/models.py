@@ -12,6 +12,9 @@ class Client(models.Model):
 class Client_Phone(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     phone = models.CharField(max_length=11)
+    class Meta:
+        unique_together = ('client', 'phone',)
+
 
     def __str__(self):
         return self.client.name + " " + self.phone
@@ -20,6 +23,9 @@ class Client_Phone(models.Model):
 class Client_Location(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     location = models.CharField(max_length=10)
+    class Meta:
+        unique_together = ('client', 'location',)
+
 
     def __str__(self):
         return self.client.name + " " + self.location

@@ -4,7 +4,7 @@
 
 - items        ( item_id pk, item_name, item_price, item_details, item_quantity, item_imgs, item_discount, cat_id fk, bra_id fk  (done)
 
-- order_items  ( ( item_id fk , ord_id fk ) pk, i_quant )     
+- order_items  ( ( item_id fk , ord_id fk ) pk, i_quant )      (done)
 
 - clients      ( cli_id pk, cli_name, cli_email )        (done)
 
@@ -32,5 +32,5 @@
  
 - categories   ( cat_id pk, cat_name, sub_cat_id fk )    (done)
 
-- brands       ( bra_id pk, bar_name )    (done)
+- brands       ( bra_id pk, bar_name, img )    (done)
 
