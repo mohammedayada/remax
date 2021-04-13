@@ -14,7 +14,7 @@ class Item(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name + " " + self.quantity
+        return self.name + " " + str(self.quantity)
 
 
 class Item_Imgs(models.Model):

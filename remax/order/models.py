@@ -15,7 +15,7 @@ class Order(models.Model):
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     def __str__(self):
-        return self.pk + " " + self.total
+        return str(self.pk) + " " + str(self.total)
 
 
 
@@ -27,7 +27,7 @@ class Order_Item(models.Model):
         unique_together = ('item', 'order',)
 
     def __str__(self):
-        return self.order + " " + self.item + " quantity" + self.quantity
+        return str(self.order) + " " + str(self.item) + " quantity" + str(self.quantity)
 
 
 
