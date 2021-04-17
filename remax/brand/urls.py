@@ -1,11 +1,10 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import BrandViewSet
-# Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'brands', BrandViewSet, basename='brands')
+from .views import BrandGetList, BrandPostList, BrandDetail
 
-# The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('', include(router.urls)),
+
+    path('getbrands/', BrandGetList.as_view()),
+    path('postbrands/', BrandPostList.as_view()),
+    path('brands/<int:pk>/', BrandDetail.as_view()),
+
 ]

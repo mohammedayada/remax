@@ -1,11 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import Category, CategoryViewSet
-# Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'categories', CategoryViewSet, basename='categories')
-
-# The API URLs are now determined automatically by the router.
+from .views import Category, CategoryPostList, CategoryGetList, CategoryDetail
 urlpatterns = [
-    path('', include(router.urls)),
+    path('getcategories/', CategoryGetList.as_view()),
+    path('postcategories/', CategoryPostList.as_view()),
+    path('categories/<int:pk>/', CategoryDetail.as_view()),
 ]

@@ -1,11 +1,68 @@
 from django.shortcuts import render
 from .serializer import ItemSerializer, Item
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils.decorators import method_decorator
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+class ItemGetList(APIView):
+    """
+    List all Items, or create a new Item.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, format=None):
+        items = Item.objects.all()
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data)
 
 
-class ItemViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ItemSerializer
-    queryset = Item.objects.all()
+class BrandPostList(APIView):
+    """
+    List all Items, or create a new Item.
+    """
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, format=None):
+        serializer = ItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class ItemDetail(APIView):
+    """
+    Retrieve, update or delete a Item instance.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Item.objects.get(pk=pk)
+        except Brand.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        Item = self.get_object(pk)
+        serializer = ItemSerializer(Item)
+        return Response(serializer.data)
+
+
+    def put(self, request, pk, format=None):
+        Item = self.get_object(pk)
+        serializer = ItemSerializer(Item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        Item = self.get_object(pk)
+        brand.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
