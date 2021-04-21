@@ -23,4 +23,4 @@ class Item_Imgs(models.Model):
 
 
     def __str__(self):
-        return self.item.name
+        return str(self.item.name) + " " + self.img.url
