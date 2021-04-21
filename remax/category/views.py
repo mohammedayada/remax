@@ -7,6 +7,9 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+
+
+# To get all categories
 class CategoryGetList(APIView):
     """
     List all Categories, or create a new Category.
@@ -19,6 +22,7 @@ class CategoryGetList(APIView):
         return Response(serializer.data)
 
 
+# To Post one category
 class CategoryPostList(APIView):
     """
     List all categories, or create a new Category.
@@ -33,12 +37,10 @@ class CategoryPostList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
+# To Retrieve, update or delete a category instance.
 class CategoryDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update or delete a category instance.
     """
     permission_classes = [IsAuthenticated]
 
@@ -49,20 +51,20 @@ class CategoryDetail(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        Category = self.get_object(pk)
-        serializer = CategorySerializer(brand)
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category)
         return Response(serializer.data)
 
 
     def put(self, request, pk, format=None):
-        Category = self.get_object(pk)
-        serializer = CategorySerializer(brand, data=request.data)
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        brand = self.get_object(pk)
-        brand.delete()
+        category = self.get_object(pk)
+        category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
