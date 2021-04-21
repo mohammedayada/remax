@@ -6,6 +6,9 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+
+
+# To get all brands
 class BrandGetList(APIView):
     """
     List all brands, or create a new brand.
@@ -18,6 +21,7 @@ class BrandGetList(APIView):
         return Response(serializer.data)
 
 
+# To post brands
 class BrandPostList(APIView):
     """
     List all brands, or create a new brand.
@@ -32,12 +36,10 @@ class BrandPostList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
+# To Retrieve, update or delete a brand instance.
 class BrandDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update or delete a brand instance.
     """
     permission_classes = [IsAuthenticated]
 
@@ -51,7 +53,6 @@ class BrandDetail(APIView):
         brand = self.get_object(pk)
         serializer = BrandSerializer(brand)
         return Response(serializer.data)
-
 
     def put(self, request, pk, format=None):
         brand = self.get_object(pk)
