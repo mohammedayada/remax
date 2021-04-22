@@ -131,3 +131,17 @@ class OrderItemDetail(APIView):
         order_item = self.get_object(pk)
         order_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# To get all Order Items by Order id
+class GetAllOrderItemsById(APIView):
+    """
+    List all Order Items.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk, format=None):
+        order = Order.objects.filter(pk=pk).first()
+        order_item = Order_Item.objects.filter(order=order)
+        serializer = OrderItemSerializer(order_item, many=True)
+        return Response(serializer.data)
