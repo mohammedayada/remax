@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
+
 # To get all items
 class ItemGetList(APIView):
     """
@@ -20,6 +21,7 @@ class ItemGetList(APIView):
         serializer = ItemSerializer(items, many=True)
         return Response(serializer.data)
 
+
 # To post new Item
 class ItemPostList(APIView):
     """
@@ -27,14 +29,11 @@ class ItemPostList(APIView):
     """
     permission_classes = [IsAuthenticated]
 
-
     def get_object(self, requset):
         try:
             return requset.user
         except Item.DoesNotExist:
             raise Http404
-
-
 
     def post(self, request, format=None):
         serializer = ItemSerializer(data=request.data, context={'request': request})
@@ -44,12 +43,12 @@ class ItemPostList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Retrieve, update or delete a Item instance
-class ItemDetail(APIView):
+
+class GetItemDetail(APIView):
     """
-    Retrieve, update or delete a Item instance.
+    Retrieve Item instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:
@@ -62,6 +61,19 @@ class ItemDetail(APIView):
         serializer = ItemSerializer(item)
         return Response(serializer.data)
 
+
+# Retrieve, update or delete a Item instance
+class UpdateOrDeleteItemDetail(APIView):
+    """
+    update or delete a Item instance.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Item.objects.get(pk=pk)
+        except Item.DoesNotExist:
+            raise Http404
 
     def put(self, request, pk, format=None):
         item = self.get_object(pk)
@@ -76,6 +88,7 @@ class ItemDetail(APIView):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 # To get all images
 class ItemImgGetList(APIView):
     """
@@ -87,6 +100,7 @@ class ItemImgGetList(APIView):
         item_img = Item_Imgs.objects.all()
         serializer = ItemImgSerializer(item_img, many=True)
         return Response(serializer.data)
+
 
 # To post one image to one item
 class ItemImgPostList(APIView):
@@ -123,3 +137,19 @@ class ItemImgForItem(APIView):
         return Response(serializer.data)
 
 
+class DeleteItemImg(APIView):
+    """
+    Delete a Item instance.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Item_Imgs.objects.get(pk=pk)
+        except Item_Imgs.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        item_img = self.get_object(pk)
+        item_img.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
