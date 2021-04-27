@@ -5,7 +5,7 @@ class ItemSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Item
-        fields = ['user', 'name', 'price', 'details', 'quantity', 'discount', 'category', 'brand']
+        fields = ['id', 'user', 'name', 'price', 'details', 'quantity', 'discount', 'category', 'brand']
 
 
 
