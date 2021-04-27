@@ -13,7 +13,7 @@ class AccountList(APIView):
     """
     List all Accounts, or create a new Account.
     """
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
 
 
 
@@ -32,6 +32,8 @@ class AccountList(APIView):
                 is_staff = True
                 serializer.save(password=password, is_active=is_active, is_staff=is_staff)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        print(request.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -53,17 +55,18 @@ class AccountDetail(APIView):
         serializer = AccountSerializer(account)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
+    def patch(self, request, pk, format=None):
         account = self.get_object(pk)
-        serializer = AccountSerializer(account, data=request.data)
+        serializer = AccountSerializer(account, data=request.data, partial=True)
         if request.user.id != account.id and not request.user.is_superuser:
             raise Http404
         if serializer.is_valid():
             if 'password' in request.data:
                 password = make_password(request.data['password'])
-                is_active = True
-                is_staff = True
-                serializer.save(password=password, is_active=is_active, is_staff=is_staff)
+                serializer.save(password=password)
+                return Response(serializer.data)
+            else:
+                serializer.save()
                 return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
