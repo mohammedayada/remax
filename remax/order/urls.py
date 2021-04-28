@@ -7,6 +7,7 @@ from .views import (
     OrderItemGetList,
     OrderItemDetail,
     GetAllOrderItemsById,
+    GetAllOrdersByClientId,
 )
 
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path('getorders/', OrderGetList.as_view()),
     path('postorders/', OrderPostList.as_view()),
     path('orders/<int:pk>/', OrderDetail.as_view()),
+    path('getordersbyclientid/<int:pk>/', GetAllOrdersByClientId.as_view()),
 
     path('getorderitems/', OrderItemGetList.as_view()),
     path('postorderitems/', OrderItemPostList.as_view()),

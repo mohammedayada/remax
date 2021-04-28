@@ -11,7 +11,7 @@ from .serializer import (
     Order,
     Order_Item
 )
-
+from client.models import Client
 
 # To get all Orders
 class OrderGetList(APIView):
@@ -71,6 +71,20 @@ class OrderDetail(APIView):
         order = self.get_object(pk)
         order.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# To get all Orders by Client Order id
+class GetAllOrdersByClientId(APIView):
+    """
+    List all Orders by Client Id.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk, format=None):
+        client = Client.objects.filter(pk=pk).first()
+        orders = Order.objects.filter(client=client)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
 
 
 # To get all Order Items
@@ -145,3 +159,5 @@ class GetAllOrderItemsById(APIView):
         order_item = Order_Item.objects.filter(order=order)
         serializer = OrderItemSerializer(order_item, many=True)
         return Response(serializer.data)
+
+
