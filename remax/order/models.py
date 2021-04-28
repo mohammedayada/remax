@@ -5,8 +5,9 @@ from item.models import Item
 
 # Create your models here.
 Status_Choices = [
+    ('pre', 'Preparation'),
     ('del', 'Delivered'),
-    ('not', 'Not delivered '),
+    ('not', 'Not delivered'),
 ]
 
 
