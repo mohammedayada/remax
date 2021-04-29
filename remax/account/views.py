@@ -78,3 +78,16 @@ class AccountDetail(APIView):
         logout(request)
         account.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class logedInAccount(APIView):
+    """
+    List all Accounts, or create a new Account.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        account =  Account.objects.filter(pk=request.user.id).first()
+        serializer = AccountSerializer(account)
+        return Response(serializer.data)
+
