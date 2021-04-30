@@ -7,7 +7,8 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
+from category.models import Category
+from brand.models import Brand
 
 # To get all items
 class ItemGetList(APIView):
@@ -153,3 +154,30 @@ class DeleteItemImg(APIView):
         item_img = self.get_object(pk)
         item_img.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# To get items by category id
+class ItemGetListByCategoryId(APIView):
+    """
+    List Items by category id.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk, format=None):
+        category = Category.objects.filter(pk=pk).first()
+        items = Item.objects.filter(category=category)
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data)
+
+# To get items by brand id
+class ItemGetListByBrandId(APIView):
+    """
+    List Items by Brand id.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk, format=None):
+        brand = Brand.objects.filter(pk=pk).first()
+        items = Item.objects.filter(brand=brand)
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data)

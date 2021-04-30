@@ -8,6 +8,8 @@ from .views import (
     ItemImgGetList,
     ItemImgForItem,
     DeleteItemImg,
+    ItemGetListByCategoryId,
+    ItemGetListByBrandId
 )
 
 urlpatterns = [
@@ -15,6 +17,8 @@ urlpatterns = [
     path('postitems/', ItemPostList.as_view()),
     path('getitembyid/<int:pk>/', GetItemDetail.as_view()),
     path('updateordeleteitembyid/<int:pk>/', UpdateOrDeleteItemDetail.as_view()),
+    path('getitembycategoryid/<int:pk>/', ItemGetListByCategoryId.as_view()),
+    path('getitembybrandid/<int:pk>/', ItemGetListByBrandId.as_view()),
 
     path('getitemsimgs/', ItemImgGetList.as_view()),
     path('postitemsimgs/', ItemImgPostList.as_view()),
