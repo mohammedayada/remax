@@ -12,6 +12,9 @@ from .views import (
     ClientLocationPostList,
     ClientLocationDetail,
     GetAllClientLocationsById,
+    ClientPostKey,
+    ClientActiveKey,
+
 )
 
 
@@ -21,6 +24,9 @@ urlpatterns = [
     path('getclients/', ClientGetList.as_view()),
     path('postclients/', ClientPostList.as_view()),
     path('clients/<int:pk>/', ClientDetail.as_view()),
+
+    path('postclientkey/', ClientPostKey.as_view()),
+    path('clientactivekey/', ClientActiveKey.as_view()),
 
     path('getclientphones/', ClientPhoneGetList.as_view()),
     path('postclientphones/', ClientPhonePostList.as_view()),

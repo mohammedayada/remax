@@ -9,7 +9,8 @@ from .views import (
     ItemImgForItem,
     DeleteItemImg,
     ItemGetListByCategoryId,
-    ItemGetListByBrandId
+    ItemGetListByBrandId,
+    ItemSearchView,
 )
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path('updateordeleteitembyid/<int:pk>/', UpdateOrDeleteItemDetail.as_view()),
     path('getitembycategoryid/<int:pk>/', ItemGetListByCategoryId.as_view()),
     path('getitembybrandid/<int:pk>/', ItemGetListByBrandId.as_view()),
+    path('searchitem/', ItemSearchView.as_view()),
 
     path('getitemsimgs/', ItemImgGetList.as_view()),
     path('postitemsimgs/', ItemImgPostList.as_view()),

@@ -16,8 +16,13 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
-
+import random
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+SERVICE = 'smtp.gmail.com:587'
+USERNAME = 'djangoproject95@gmail.com'
+PASSWORD = 'hassan@1995'
 # To get all Clients
 class ClientGetList(APIView):
     """
@@ -49,6 +54,64 @@ class ClientPostList(APIView):
                 clientSerializer = ClientSerializer(client)
                 return Response(clientSerializer.data, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+def send_email(fromaddr, toaddrs, number):
+    # Create the plain-text and HTML version of your message
+    message = f"""Subject: Your Key
+
+    Hi, your key is {number}"""
+    try:
+
+        # connection = init_connection(SERVICE, USERNAME, PASSWORD)
+
+        server = smtplib.SMTP(SERVICE)
+        server.ehlo()
+        server.starttls()
+        server.login(USERNAME, PASSWORD)
+        server.ehlo()
+        server.sendmail(fromaddr, toaddrs, message.format(number=number))
+        server.quit()
+    except:
+        logging.critical("cant start connection")
+
+class ClientPostKey(APIView):
+    """
+    Create a new Key.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None):
+        if 'email' in request.data:
+            number = random.randint(1000, 9999)
+            client = Client.objects.filter(email=request.data['email']).first()
+            if client:
+                client.key = number
+                client.save()
+                send_email(USERNAME, client.email, number)
+                clientSerializer = ClientSerializer(client)
+                return Response(clientSerializer.data)
+        return Response("You must send email", status=status.HTTP_400_BAD_REQUEST)
+
+class ClientActiveKey(APIView):
+    """
+    Active Key.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None):
+        if 'email' in request.data and 'key' in request.data:
+            client = Client.objects.filter(email=request.data['email']).first()
+            if client:
+                if client.key == int(request.data['key']):
+                    client.is_active = True
+                    client.save()
+            clientSerializer = ClientSerializer(client)
+            return Response(clientSerializer.data)
+        return Response("You must send email and Key", status=status.HTTP_400_BAD_REQUEST)
 
 
 # To Retrieve, update or delete a Client instance.

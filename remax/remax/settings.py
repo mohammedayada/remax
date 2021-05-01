@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'account',
     'rest_framework',
     'corsheaders',
+    'django_filters',
 
 ]
 
@@ -140,6 +141,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'NON_FIELD_ERRORS_KEY': 'global',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 # JWT settings

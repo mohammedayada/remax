@@ -9,6 +9,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from category.models import Category
 from brand.models import Brand
+from rest_framework import filters
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
 
 # To get all items
 class ItemGetList(APIView):
@@ -16,7 +19,6 @@ class ItemGetList(APIView):
     List all Items, or create a new Item.
     """
     permission_classes = [AllowAny]
-
     def get(self, request, format=None):
         items = Item.objects.all()
         serializer = ItemSerializer(items, many=True)
@@ -181,3 +183,13 @@ class ItemGetListByBrandId(APIView):
         items = Item.objects.filter(brand=brand)
         serializer = ItemSerializer(items, many=True)
         return Response(serializer.data)
+
+
+# To search by using name
+class ItemSearchView(generics.ListAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'details']
+    filterset_fields = ['name', 'details']
+
