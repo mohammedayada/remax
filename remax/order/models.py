@@ -13,10 +13,10 @@ Status_Choices = [
 
 class Order(models.Model):
     date_time = models.DateTimeField(default=now)
-    status = models.CharField(choices=Status_Choices, max_length=3, default='not')
+    status = models.CharField(choices=Status_Choices, max_length=3, default='pre')
     total = models.FloatField(default=0)
     delivery_cost = models.FloatField(default=0)
-
+    address = models.CharField(max_length=200)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     def __str__(self):
