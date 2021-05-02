@@ -187,6 +187,7 @@ class ItemGetListByBrandId(APIView):
 
 # To search by using name
 class ItemSearchView(generics.ListAPIView):
+    permission_classes = [AllowAny]
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     filter_backends = [filters.SearchFilter]
