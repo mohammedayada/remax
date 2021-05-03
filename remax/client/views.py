@@ -45,14 +45,18 @@ class ClientPostList(APIView):
 
     def post(self, request, format=None):
         serializer = ClientSerializer(data=request.data)
+        if 'email' in request.data:
+            client = Client.objects.filter(email=request.data['email']).first()
+            print(client)
+            if client:
+
+                clientSerializer = ClientSerializer(client)
+                return Response(clientSerializer.data, status=status.HTTP_201_CREATED)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if 'email' in request.data:
-            client = Client.objects.filter(email=request.data['email']).first()
-            if client:
-                clientSerializer = ClientSerializer(client)
-                return Response(clientSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -119,7 +123,7 @@ class ClientDetail(APIView):
     """
     Retrieve, update or delete a Client instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:
@@ -179,7 +183,7 @@ class ClientPhoneDetail(APIView):
     """
     Retrieve, update or delete a Client Phone instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:
@@ -211,7 +215,7 @@ class GetAllClientPhonesById(APIView):
     """
     List all Client Phone.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, pk, format=None):
         client = Client.objects.filter(pk=pk).first()
@@ -253,7 +257,7 @@ class ClientLocationDetail(APIView):
     """
     Retrieve, update or delete a Client Location instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:
@@ -285,7 +289,7 @@ class GetAllClientLocationsById(APIView):
     """
     List all Client Location.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, pk, format=None):
         client = Client.objects.filter(pk=pk).first()

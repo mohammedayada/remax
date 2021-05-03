@@ -24,9 +24,10 @@ class Client_Phone(models.Model):
 
 class Client_Location(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    location = models.CharField(max_length=10)
+    location = models.CharField(max_length=100)
     class Meta:
         unique_together = ('client', 'location',)
+        
 
 
     def __str__(self):

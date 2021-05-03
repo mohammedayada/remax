@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-from client.models import Client
+from client.models import Client,Client_Location
 from item.models import Item
 
 # Create your models here.
@@ -16,7 +16,7 @@ class Order(models.Model):
     status = models.CharField(choices=Status_Choices, max_length=3, default='pre')
     total = models.FloatField(default=0)
     delivery_cost = models.FloatField(default=0)
-    address = models.CharField(max_length=200)
+    address =models.ForeignKey(Client_Location, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     def __str__(self):
