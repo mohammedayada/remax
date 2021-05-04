@@ -155,7 +155,7 @@ class ClientPhoneGetList(APIView):
     """
     List all Client Phone.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, format=None):
         client_phone = Client_Phone.objects.all()
@@ -229,7 +229,7 @@ class ClientLocationGetList(APIView):
     """
     List all Client Location.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, format=None):
         client_location = Client_Location.objects.all()

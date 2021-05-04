@@ -42,7 +42,7 @@ class CategoryDetail(APIView):
     """
     Retrieve, update or delete a category instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:

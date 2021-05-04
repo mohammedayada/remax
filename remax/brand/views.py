@@ -29,10 +29,12 @@ class BrandPostList(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
+        print(request.data)
         serializer = BrandSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -41,7 +43,7 @@ class BrandDetail(APIView):
     """
     Retrieve, update or delete a brand instance.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:
@@ -54,9 +56,9 @@ class BrandDetail(APIView):
         serializer = BrandSerializer(brand)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
+    def patch(self, request, pk, format=None):
         brand = self.get_object(pk)
-        serializer = BrandSerializer(brand, data=request.data)
+        serializer = BrandSerializer(brand, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
